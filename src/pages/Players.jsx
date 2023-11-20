@@ -3,7 +3,6 @@ import logo from "../assets/t1-logo.png";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
-import playersData from "../fakeData.json";
 
 const StBox = styled.div`
   width: 100%;
@@ -11,7 +10,6 @@ const StBox = styled.div`
   background-color: black;
   display: flex;
   flex-direction: column;
-  align-items: center;
   margin: 0 auto;
   color: white;
   padding: 30px;
@@ -42,17 +40,15 @@ const StImg = styled.img`
 
 const StDiv = styled.div`
   border: 1px solid white;
-
-  height: 140px;
+  width: 500px;
+  height: 50px;
   color: white;
-
+  border-radius: 10px;
   margin: 10px;
-`;
-
-const StComment = styled.div`
+  padding: 10px;
   display: flex;
   align-items: center;
-  flex-direction: row;
+  position: relative;
 `;
 
 const StContent = styled.p`
@@ -60,6 +56,23 @@ const StContent = styled.p`
   white-space: nowrap;
   text-overflow: ellipsis;
   word-break: break-all;
+`;
+
+const Stplayer = styled.img`
+  width: 200px;
+`;
+
+const StSmallButton = styled.button`
+  width: 55px;
+  height: 30px;
+  border-radius: 10px;
+  background-color: white;
+  color: black;
+  border: none;
+  &:hover {
+    background-color: red;
+    color: white;
+  }
 `;
 
 function Players() {
@@ -106,8 +119,30 @@ function Players() {
     setEditingCommentId(null);
   };
 
-  const playerImg = playersData.img;
-  console.log(playerImg);
+  const playerImg = [
+    {
+      name: "Jeus",
+      img: "https://i.namu.wiki/i/ZbG6_4Tapcaw8KRL67k4gODQTxNWWmZJX3v5AD-jwuE4RcQ3efq08rh6Hf0RPj02ah9rS20aIAUKY0DipXPzUMhW9LfJGwBC9B1sFISD0ZCsJ-7n8AUCKh83cvUt5hDM4qHhfvnL0MQ04kFLPv1y0Q.webp",
+    },
+    {
+      name: "Oner",
+      img: "https://i.namu.wiki/i/9yVZyfO6GkELxynxREzLLyk7__5umuX1xghjK5kqYX_K9pkF4d70e-_jhjRtJTs1DwjxF6K4EY01QyDxhKKULcVLSq5KL2Vvo5bTRh3s0pyTFrWvm6yMqrTV35_LUIblbaoPLA_cShfNbd8UK8ppTA.webp",
+    },
+    {
+      name: "Faker",
+      img: "https://i.namu.wiki/i/9Wrnx48F7h_8gQJ4JXZJpLnvNs47pFeZHboLg6BI6yIisPX6YacPcPLV5PZwxIpyQz6tD7orzEobHT0cxJtpljItI-dCmDO46rGJomX53dn7GY6aoVL_6xHtBWuQUp-FJs0TyNcp5B_jHKXuwUO9-Q.webp",
+    },
+    {
+      name: "Gumayusi",
+      img: "https://i.namu.wiki/i/jrIiQS_IaWB5GhFs8RVM2xob9epyPu9AuuEN0oZe8wMPq5L1njKm54d8rXHCX1d-O_RLtlMZEkdFEKBVf3GzeV-Zwb7lG_61GO5JJ_ziPo_GEQW4z90ji2WqK42xfyaXFUovUz21yk2KmZ7witTTgA.webp",
+    },
+    {
+      name: "Keria",
+      img: "https://i.namu.wiki/i/hyw12c7O8ze0ciMH0STXu51z2zBdBpvL-n2xKrb565izis9hzLkLrarsPZAGBNowx1a9vMXo6P-VVm69L4wOuu71pKjuFzecp9LEzx94I5u6tqhOgjonKAKbhuAeZI54Np5PeyHBgW0fR355cQN_Mw.webp",
+    },
+  ];
+
+  const bannerImg = playerImg.find((item) => item.name === param.id)?.img || "";
 
   return (
     <StBox>
@@ -177,33 +212,53 @@ function Players() {
           </StButton>
         </div>
       </StHeader>
-      <main>
-        <img src={""} alt="선수 이미지" className={players[0].name} />
+      <main style={{ marginTop: "30px" }}>
+        <Stplayer
+          src={bannerImg}
+          alt="선수 이미지"
+          className={players[0].name}
+        />
         <h2>{players[0].name}의 공간에 오신 것을 환영합니다.</h2>
         <div>
           {players.map((player) => {
             return (
               <StDiv key={player.id} className="comment-box">
-                <h4>닉네임: {player.nickName}</h4>
+                <h4 style={{ marginRight: "20px" }}>{player.nickName}</h4>
                 {editingCommentId === player.id ? (
                   <>
                     <textarea
+                      style={{
+                        backgroundColor: "black",
+                        color: "white",
+                        width: " 300px",
+                        height: "45px",
+                      }}
                       value={player.content}
                       onChange={(e) => handleSave(player.id, e.target.value)}
                     />
-                    <button
+                    <StSmallButton
+                      style={{ position: "absolute", right: "10px" }}
                       onClick={() => handleSave(player.id, player.content)}
                     >
                       저장
-                    </button>
+                    </StSmallButton>
                   </>
                 ) : (
                   <>
-                    <StContent> 내용: {player.content}</StContent>
-                    <button onClick={() => handleEdit(player.id)}>수정</button>
+                    <StContent style={{ marginRight: "20px" }}>
+                      {" "}
+                      {player.content}
+                    </StContent>
+                    <StSmallButton
+                      style={{ position: "absolute", right: "10px" }}
+                      onClick={() => handleEdit(player.id)}
+                    >
+                      수정
+                    </StSmallButton>
                   </>
                 )}
-                <button
+                <StSmallButton
+                  style={{ position: "absolute", right: "70px" }}
                   onClick={() => {
                     const deleteComment = comments.filter(
                       (filteredComment) => filteredComment.id !== player.id
@@ -212,7 +267,7 @@ function Players() {
                   }}
                 >
                   삭제
-                </button>
+                </StSmallButton>
               </StDiv>
             );
           })}
